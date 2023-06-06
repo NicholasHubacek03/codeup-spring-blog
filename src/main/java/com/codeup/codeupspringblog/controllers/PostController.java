@@ -1,8 +1,8 @@
 package com.codeup.codeupspringblog.controllers;
 
-import ch.qos.logback.core.model.Model;
 import com.codeup.codeupspringblog.models.Post;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -10,11 +10,12 @@ import java.util.List;
 
 @Controller
 public class PostController {
-    @GetMapping(path = "/posts")
+//    @GetMapping(path = "/posts")
 //    @ResponseBody
 //    public String postIndex(){
 //        return "This is the Index";
 //    }
+    @GetMapping("/posts")
     public String postIndex(Model model) {
         List<Post> posts = new ArrayList<>();
         Post p1 = new Post();
@@ -28,10 +29,11 @@ public class PostController {
         model.addAttribute("posts", posts);
         return "posts/index";
     }
-    @RequestMapping(path = "/posts/{id}", method = RequestMethod.POST)
+//    @RequestMapping(path = "/posts/{id}", method = RequestMethod.POST)
 //    @ResponseBody
 //    public String postId(@PathVariable String id){
 //        return "display a post with a id: " + (id);
+@PostMapping("/posts/{id}")
     public String postId(@PathVariable int id, Model model) {
         Post post = new Post();
         post.setTitle("a shrimp");
