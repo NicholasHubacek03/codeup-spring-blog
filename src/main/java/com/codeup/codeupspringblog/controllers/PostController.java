@@ -10,48 +10,38 @@ import java.util.List;
 
 @Controller
 public class PostController {
-//    @GetMapping(path = "/posts")
-//    @ResponseBody
-//    public String postIndex(){
-//        return "This is the Index";
-//    }
+
     @GetMapping("/posts")
-    public String postIndex(Model model) {
-        List<Post> posts = new ArrayList<>();
-        Post p1 = new Post();
-        p1.setTitle("post 1");
-        p1.setBody("this desc1");
-        Post p2 = new Post();
-        p2.setTitle("post 2");
-        p2.setBody("this desc2");
-        posts.add(p1);
-        posts.add(p2);
-        model.addAttribute("posts", posts);
+
+    public String viewPosts(Model model) {
+        List<Post> posts= new ArrayList<>();
+        posts.add(new Post("first post", "this is my first post"));
+        posts.add(new Post("second post", "this is my second post"));
+
+        model.addAttribute("posts",posts);
         return "posts/index";
     }
-//    @RequestMapping(path = "/posts/{id}", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String postId(@PathVariable String id){
-//        return "display a post with a id: " + (id);
-@PostMapping("/posts/{id}")
-    public String postId(@PathVariable int id, Model model) {
-        Post post = new Post();
-        post.setTitle("a shrimp");
-        post.setBody("this desc");
-        model.addAttribute("id",id);
-        model.addAttribute("post",post);
-        return "posts/show";
- }
 
-    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
-    @ResponseBody
-    public String viewPostCreate() {
-        return "View post creation form";
+
+    @GetMapping("/posts/{id}")
+    public String singlePost(@PathVariable long id, Model model) {
+        Post post1= new Post("title", "description");
+        model.addAttribute("post", post1);
+        return "posts/show";
     }
 
-    @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
+
+    @GetMapping("/posts/create")
     @ResponseBody
-    public String postCreatedPost() {
-        return "You created a post";
+    public String showPostForm() {
+        return "Viewing form to create a new post!";
+    }
+
+
+    @PostMapping("/posts/create")
+//    @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
+    @ResponseBody
+    public String submitNewPost() {
+        return "submitting new post";
     }
 }
