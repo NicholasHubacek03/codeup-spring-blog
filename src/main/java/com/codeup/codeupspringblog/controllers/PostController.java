@@ -1,5 +1,6 @@
 package com.codeup.codeupspringblog.controllers;
 
+import com.codeup.codeupspringblog.Service.EmailService;
 import com.codeup.codeupspringblog.models.Post;
 import com.codeup.codeupspringblog.models.User;
 import com.codeup.codeupspringblog.repositories.PostCategoriesRepository;
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class PostController {
     private final PostRepository postsDao;
+
+    private final EmailService emailService;
     private final PostCategoriesRepository catDao;
     private final UserRepository usersDao;
 
-    public PostController(PostRepository postsDao, PostCategoriesRepository catDao, UserRepository usersDao) {
+    public PostController(PostRepository postsDao, EmailService emailService, PostCategoriesRepository catDao, UserRepository usersDao) {
         this.postsDao = postsDao;
+        this.emailService = emailService;
         this.catDao = catDao;
         this.usersDao = usersDao;
     }
@@ -48,6 +52,7 @@ public class PostController {
         User user = usersDao.findById(1L).get();
         post.setUser(user);
         postsDao.save(post);
+        emailService.prepareAndSend(post,"You created a new post!", "Title: " + post.getTitle() + "\nBody: " + post.getBody());
         return "redirect:/posts";
     }
     @GetMapping("/posts/{id}/edit")
