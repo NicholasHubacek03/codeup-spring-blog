@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
     <title>post</title>
 </head>
 <body>
+<nav th:replace="partials/navbar :: navbar"></nav>
+<h1 style="text-align: center">Post Details for Post #<span th:text="${id}"></span></h1>
+<hr>
 
-<h1><span th:text="${post.title}"></span></h1>
-<h3><span th:text="${post.body}"></span></h3>
-<h3><span th:text="${post.user.email}"></span></h3>
-
+<div class="post">
+    <h2 th:text = "${title}"></h2>
+    <p th:text = "${body}"></p>
+    <small th:text ="${email}"></small>
+</div>
+<div th:if="${#authentication.principal.id == post.user.getId()}">
+    <a th:href="@{/posts/{id}/edit(id=${post.id})}">Edit Post</a>
+</div>
 </body>
 </html>
